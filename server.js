@@ -96,6 +96,35 @@ const shoes = [
     { name: "Fifty-Inch Heels", price: 175, type: "heel" }
 ];
 
+app.get('/shoes', (req, res) => {
+        
+    const { 'min-price': minPrice, 'max-price': maxPrice } = req.query;
+
+    let foundShoes = shoes
+    if(minPrice){
+        foundShoes = foundShoes.filter((shoe) => {
+                    return (shoe.price >= minPrice)
+                })
+    }
+
+    if(maxPrice){
+        foundShoes = foundShoes.filter((shoe) => {
+                    return (shoe.price <= maxPrice)
+                })
+    }
+
+    if(req.query.type){
+        foundShoes = foundShoes.filter((shoe) => {
+                    return (shoe.type === req.query.type)
+                })
+    }
+
+
+
+    res.send(foundShoes)
+
+})
+// 
 //min-price: Excludes shoes below this price.
 // app.get('/shoes', (req, res) => {
 //     const foundShoes = shoes.filter((shoe) => {
@@ -105,7 +134,7 @@ const shoes = [
 // })
 
 
-// //max-price: Excludes shoes above this price.
+//max-price: Excludes shoes above this price.
 // app.get('/shoes', (req, res) => {
 //     const foundShoes = shoes.filter((shoe) => {
 //         return (shoe.price < req.query.price)
@@ -124,9 +153,9 @@ const shoes = [
 
 // //No parameters: Responds with the full list of shoes.
 
-app.get('/shoes', (req, res) => {
-    res.send(shoes);
-});
+// app.get('/shoes', (req, res) => {
+//     res.send(shoes);
+// });
 
 app.listen(3000, () => {
     console.log("Listening on port 3000")
